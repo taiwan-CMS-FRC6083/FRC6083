@@ -47,7 +47,7 @@ public class PWMDriveAssembly {
 			joy3d = new Joystick(joy3d_id);
 			
 			drive = new RobotDrive(talon_left, talon_right);
-		}
+		}	
 	}
 	
 	public static void teleopPeriodic(){
