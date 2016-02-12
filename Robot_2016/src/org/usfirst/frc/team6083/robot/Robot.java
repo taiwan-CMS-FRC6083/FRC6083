@@ -1,6 +1,9 @@
 
 package org.usfirst.frc.team6083.robot;
 
+import Systems.CANDriveAssembly;
+import Systems.PWMDriveAssembly;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -28,6 +31,11 @@ public class Robot extends IterativeRobot {
         chooser.addDefault("Default Auto", defaultAuto);
         chooser.addObject("My Auto", customAuto);
         SmartDashboard.putData("Auto choices", chooser);
+        
+        //init
+        
+        CANDriveAssembly.init();
+    	PWMDriveAssembly.init();
     }
     
 	/**
@@ -64,7 +72,8 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        
+    	CANDriveAssembly.teleopPreiodic();
+    	PWMDriveAssembly.teleopPeriodic();
     }
     
     /**

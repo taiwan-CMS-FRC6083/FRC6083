@@ -1,87 +1,63 @@
 package Systems;
 
+import Systems.JoyDrive;
+
+import edu.wpi.first.wpilibj.smartdashboard.*;
 import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
 
 //Code for controlling the drivetrain
 
 public class PWMDriveAssembly {
-	
+		
 	private static boolean inited = false;
 	
 	// Speed controller IDs
 	private final static int talon_left_id = 0;
 	private final static int talon_right_id = 1;
-	
-	//joystick
-	private final static int joy_id = 0;
-	private final static int joy3d_id = 1;
-	private final static int joy_ly = 1;
-	private final static int joy_ry = 5;
-	private final static int joy3d_y = 1;
+	private final static int talon_ball_id = 2;
 	
 	//VictorSP
 	private static VictorSP talon_left;
 	private static VictorSP talon_right;
+	private static VictorSP talon_ball;
 	
 	//Drive
 	private static RobotDrive drive;
 	
-	//joystick
-	private static Joystick  joy,joy3d;
 	
-	private static double RY;
-	private static double LY;
-	private static double val;
-	private static double arm_speedlimit;
+	
 	
 	public static void init(){
 		if(!inited){
 			//talon
 			talon_left = new VictorSP(talon_left_id);
 			talon_right = new VictorSP(talon_right_id);
-			
-			//joystick
-			joy = new Joystick(joy_id);
-			joy3d = new Joystick(joy3d_id);
-			
-			drive = new RobotDrive(talon_left, talon_right);
+			talon_ball = new VictorSP(talon_ball_id);
+			JoyDrive.init();
 		}	
 	}
 	
 	public static void teleopPeriodic(){
-		Joystickvalue();
-		drive.tankDrive(LY, RY);
+		//drive();
+		
+		Dashboard();
 	}
 	
-	public static void Joystickvalue(){
-		
-		//Arm
-		if(-joy3d.getRawAxis(joy3d_y)>0.1||-joy3d.getRawAxis(joy3d_y)<0.1){
-        	val = -joy3d.getRawAxis(joy3d_y);
-        }	
-		else if(-joy3d.getRawAxis(joy3d_y)>0.5||-joy3d.getRawAxis(joy3d_y)<-0.5){
-			val = arm_speedlimit;
-		}
-		else{
-			val = 0.0;
-		}
-		
-		//Drivetrain
-		if(joy.getRawAxis(joy_ly)>0.1 || joy.getRawAxis(joy_ly)<-0.1){		
-        	LY = joy.getRawAxis(joy_ly);
-        }	
-        else{
-        	LY = 0.0 ;	
-        }	
-        if(joy.getRawAxis(joy_ry)>0.1 || joy.getRawAxis(joy_ry)<-0.1){		
-        	RY = joy.getRawAxis(joy_ry);
-        }	
-        else{
-        	RY = 0.0 ;	
-        }	
-		
-		
+	public static void drive(){
+		talon_left.set(JoyDrive.LY);
+		talon_right.set(JoyDrive.RY);
 	}
+	
+	public static void Dashboard(){
+    	SmartDashboard.putNumber("Left Motor Encoder Value", -talon_left.get());
+    	SmartDashboard.putNumber("Right Motor Encoder Value", talon_right.get());
+    	SmartDashboard.putNumber("spSpeedControaleed", (-talon_left.get()+ talon_right.get())/2);
+    	SmartDashboard.putNumber("Speed Plot", (-talon_left.get()+ talon_right.get())/2);
+    	SmartDashboard.putNumber("LY", JoyDrive.LY);
+    	SmartDashboard.putNumber("RY", JoyDrive.RY);
+	}
+	
+
 }
