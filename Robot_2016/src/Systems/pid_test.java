@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDeviceStatus;
+import edu.wpi.first.wpilibj.Timer;
 
 public class pid_test {
 	
@@ -25,16 +26,16 @@ public class pid_test {
 	private static int PulseWidthpos,PulseWidthus,periodus,PulseWidthVel ;
 	
 	
+	
+	
+	
 	//PID zone
 	
 	/*this zone is for the PID control systems
-	 * 
-	 * 
 	 */
+	private static double kp,ki,kd;
 	
-	private static final int pos_angle_a = 0;
-	
-	
+	private static double targetPositionRotations;
 	
 	
 	
@@ -42,31 +43,77 @@ public class pid_test {
 	
 	
 	public static void init(){
-		if(!inited){
+		if(true){
 			talon_arm = new CANTalon(talon_arm_id);
+			
+			
 			talon_arm.enableControl();
 			talon_arm.setSafetyEnabled(true);
-			talon_arm.changeControlMode(CANTalon.TalonControlMode.Position);
+			talon_arm.changeControlMode(CANTalon.TalonControlMode.Follower);
 			talon_arm.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute);
+			talon_arm.reverseSensor(false);
+			
+//			talon_arm.configNo minalOutputVoltage(+0f, -0f);
+//			
+//			talon_arm.configPeakOutputVoltage(+12f, -12f);
+//			talon_arm.setAllowableClosedLoopErr(0);
+//	        talon_arm.setProfile(0);
+//	        talon_arm.setF(0.0);
+//	        talon_arm.setP(0.1);
+//	        talon_arm.setI(0.0); 
+//	        talon_arm.setD(0.0); 
+//	        talon_arm.setEncPosition(0);
+			
+			
 			JoyDrive.init();
 			BusVoltage = new double[device_num];
 			OutputVoltage = new double[device_num];
+			
+			
+			
+			kp = 0;
+			ki = 0;
+			kd = 0;
+			talon_arm.setPID(1.0, 0.0, 0.0);			
 			inited = true;
-			
-			
-			
 		}
 			
 	}
 	
-	public static void teleopPreiodic(){
-		
+	public static void teleopPeriodic(){
 		
 		getfeedback();
+		//pidcontrol();
+		talon_arm.set(JoyDrive.LY);
 		
 	}
 	
+	public static void getfeedback(){
+		getencoder();
+//		BusVoltage[0] = talon_arm.getBusVoltage();
+//		OutputVoltage[0] = talon_arm.getOutputVoltage();
+		Dashboard();
+	}
 	
+	public static void pidcontrol(){
+		double leftYstick = JoyDrive.LY;
+    	targetPositionRotations = leftYstick * 50.0; /* 50 Rotations in either direction */
+//    	talon_arm.changeControlMode(CANTalon.TalonControlMode.Position);
+    	talon_arm.set(targetPositionRotations); /* 50 rotations in either direction */
+	}
+	
+	
+	
+	public static void Dashboard(){
+		SmartDashboard.putNumber("arm_value", talon_arm.get());
+		SmartDashboard.putInt("PulseWidthpos", PulseWidthpos);
+		SmartDashboard.putInt("PulseWidthus", PulseWidthus);
+		SmartDashboard.putInt("periodus", periodus);
+		SmartDashboard.putInt("PulseWidthVel", PulseWidthVel);
+		SmartDashboard.putNumber("arm_value",talon_arm.get());
+	}
+	
+	@SuppressWarnings("unused")
 	public static void getencoder(){
 		PulseWidthpos = talon_arm.getPulseWidthPosition();
 		PulseWidthus = talon_arm.getPulseWidthRiseToFallUs();
@@ -74,39 +121,4 @@ public class pid_test {
 		PulseWidthVel = talon_arm.getPulseWidthVelocity();
 		FeedbackDeviceStatus sensorstaus = talon_arm.isSensorPresent(FeedbackDevice.CtreMagEncoder_Absolute);
 	}
-	
-	public static void getfeedback(){
-		getencoder();
-		BusVoltage[0] = talon_arm.getBusVoltage();
-		OutputVoltage[0] = talon_arm.getOutputVoltage();
-		
-	}
-	
-	public static void pidcontrol(double angle){
-		
-		//pos init
-		double pos, posnow, posdiff;
-		pos = postoang(angle,1);
-		posnow = PulseWidthpos;
-		posdiff = pos - posnow;
-		
-		//PID control
-		
-		
-		
-	}
-	
-	public static double postoang(double input, int mode){
-		double temp;
-		if(mode == 2){
-			temp = input*(360/4096);
-		}
-		else{
-			temp = input/(360/4096);
-		}
-		return temp;
-		
-	}
-	
-	
 }

@@ -3,7 +3,7 @@ package org.usfirst.frc.team6083.robot;
 
 import Systems.CANDriveAssembly;
 import Systems.PWMDriveAssembly;
-import Systems.pid_test;
+import Systems.Ultrasonic;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -22,6 +22,7 @@ public class Robot extends IterativeRobot {
     final String customAuto = "My Auto";
     final String defaultTele = "Normal";
     final String pidTele = "pid_test";
+    final String currentTele = "talon_current_test";
     String autoSelected;
     String teleSelected;
     SendableChooser chooserAuto;
@@ -38,6 +39,7 @@ public class Robot extends IterativeRobot {
         chooserAuto.addObject("My Auto", customAuto);
         chooserTele.addDefault("Normal", defaultTele);
         chooserTele.addObject("pid_test", pidTele);
+        chooserTele.addObject("talon_current_test", currentTele);
         SmartDashboard.putData("Auto choices", chooserAuto);
         SmartDashboard.putData("Tele choices", chooserTele);
         
@@ -45,7 +47,6 @@ public class Robot extends IterativeRobot {
         
         CANDriveAssembly.init();
     	PWMDriveAssembly.init();
-    	pid_test.init();
     }
     
 	/**
@@ -74,6 +75,8 @@ public class Robot extends IterativeRobot {
     	case defaultAuto:
     	default:
     	//Put default auto code here
+    		
+    		
             break;
     	}
     }
@@ -84,15 +87,15 @@ public class Robot extends IterativeRobot {
     public void teleopInit(){
     	teleSelected = (String) chooserTele.getSelected();
     	System.out.println("Tele selected: " + teleSelected);
+    	
+    	
     }
     
     
     
     public void teleopPeriodic() {
     	switch(teleSelected) {
-    	case pidTele:
-    		pid_test.teleopPreiodic();
-    		break;
+    	
     	
     	case defaultTele:
     	default:
@@ -109,5 +112,6 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
     	
     }
+    
     
 }

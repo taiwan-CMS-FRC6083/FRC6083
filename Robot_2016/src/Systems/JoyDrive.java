@@ -1,6 +1,8 @@
 package Systems;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class JoyDrive {
 	
@@ -9,7 +11,15 @@ public class JoyDrive {
 	public final static int joy3d_id = 1;
 	public final static int joy_ly = 1;
 	public final static int joy_ry = 5;
+	public final static int joy_lt = 2;
+	public final static int joy_rt = 3;
 	public final static int joy3d_y = 1;
+	
+	public final static int joy_a_id = 1;
+	public final static int joy_b_id = 2;
+	public final static int joy_x_id = 3;
+	public final static int joy_y_id = 4;
+	
 	
 	//joystick dirve
 	public static Joystick  joy,joy3d;
@@ -18,7 +28,11 @@ public class JoyDrive {
 	public static double RY;
 	public static double LY;
 	public static double val;
-	public static double arm_speedlimit = 0.7;
+	
+	public static boolean joy_a,joy_b,joy_x,joy_y;
+	
+	
+	
 	
 	public static void init(){
 		joy = new Joystick(joy_id);
@@ -26,17 +40,6 @@ public class JoyDrive {
 	}
 	
 	public static void Joystickvalue(){
-		
-		//Arm
-		if(-joy3d.getRawAxis(joy3d_y)>0.1||-joy3d.getRawAxis(joy3d_y)<0.1){
-        	val = -joy3d.getRawAxis(joy3d_y);
-        }	
-		else if(-joy3d.getRawAxis(joy3d_y)>arm_speedlimit||-joy3d.getRawAxis(joy3d_y)<-arm_speedlimit){
-			val = arm_speedlimit;
-		}
-		else{
-			val = 0.0;
-		}
 		
 		//Drivetrain
 		if(joy.getRawAxis(joy_ly)>0.1 || joy.getRawAxis(joy_ly)<-0.1){		
@@ -52,8 +55,15 @@ public class JoyDrive {
         	RY = 0.0 ;	
         }	
 		
-		
+		joy_a = joy.getRawButton(joy_a_id);
+        joy_b = joy.getRawButton(joy_b_id);
+		joy_x = joy.getRawButton(joy_x_id);
+        joy_y = joy.getRawButton(joy_y_id);
+        Dashboard();
 	}
 	
-	
+	public static void Dashboard(){
+    	SmartDashboard.putNumber("LY", JoyDrive.LY);
+    	SmartDashboard.putNumber("RY", JoyDrive.RY);
+	}
 }
