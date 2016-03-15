@@ -38,7 +38,7 @@ public class PWMDriveAssembly {
 			shooter_launcher = new VictorSP(shooter_launcher_id);
 			JoyDrive.init();
 			
-			startout_main = true;
+			startout_main = true;  //if the shooter's part is enabled
 			startout_launcher = true;
 			startin = true;
 		}	
@@ -75,6 +75,12 @@ public class PWMDriveAssembly {
     		}
 		}
 		else{
+			if(!startout_main && startout_launcher){
+				shooter_main.set(-0.7);
+				shooter_launcher.set(-0.5);
+				Timer.delay(1);
+				startout_launcher = false;
+			}
 			if(!startout_main){
     			for(Double D = -0.5;D<=0;D=D+0.1){
     				shooter_main.set(D);
@@ -85,26 +91,6 @@ public class PWMDriveAssembly {
     		}	
 		}
 		
-    	if(JoyDrive.joy_x){
-    		if(startout_launcher){
-    			
-    			shooter_launcher.set(-0.5);
-    			
-    			startout_launcher = false;
-    		}
-    		
-    	}
-    	else{
-    		if(!startout_launcher){
-    			for(Double D = -0.3;D<=0;D=D+0.05){
-    			
-                	shooter_launcher.set(D);
-    		    	Timer.delay(0.1);
-    		    }
-    			startout_launcher = true ;
-    		}
-    	}
-    	
     	if(JoyDrive.joy_b){
     		if(startin){
     			shooter_main.set(0.6);
