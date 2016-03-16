@@ -81,13 +81,14 @@ public class PWMDriveAssembly {
 				Timer.delay(1);
 				startout_launcher = false;
 			}
-			if(!startout_main){
+			if(!startout_main && !startout_launcher){
     			for(Double D = -0.5;D<=0;D=D+0.1){
     				shooter_main.set(D);
     				
     		    	Timer.delay(0.1);
     		    }	
             	startout_main = true ;
+            	startout_launcher = true;
     		}	
 		}
 		
@@ -103,7 +104,7 @@ public class PWMDriveAssembly {
     		if(!startin){
     			for(Double D=0.2; D>=0; D=D-0.05){
     				shooter_main.set(D);
-    				Double Y = D-0.2;
+    				Double Y = D-0.2;  //lower launcher speed
     				if(Y<0.0){
     					Y=0.0;
     				}
