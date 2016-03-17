@@ -27,14 +27,18 @@ public class CANDriveAssembly {
         
         kp = 0;
         y = 0;
+        JoyDrive.init();
 	}
 	
 	//Called in teleopMode
 	public static void teleopPreiodic(){
+		if(JoyDrive.joy_Start){
+			talon_arm.setEncPosition(0);
+		}
+		JoyDrive.Joystickvalue();
     	double tempangle,lastangle;
     	lastangle = angle;
-    	angle = SmartDashboard.getNumber("angle");
-    	
+    	angle = SmartDashboard.getNumber("angle");   	
     	SmartDashboard.putNumber("arm_value", talon_arm.get());
     	kp = SmartDashboard.getNumber("kp");
     	
@@ -75,5 +79,7 @@ public class CANDriveAssembly {
         y = x;
 	}
 	
-	
+	public static void joystick(){
+		
+	}
 }

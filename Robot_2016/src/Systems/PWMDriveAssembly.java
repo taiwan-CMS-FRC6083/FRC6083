@@ -19,12 +19,16 @@ public class PWMDriveAssembly {
 	private final static int talon_right_id = 1;
 	private final static int shooter_main_id = 4;
 	private final static int shooter_launcher_id = 3;
+	private final static int arm_2_id = 2;
 	
 	//VictorSP
 	private static VictorSP talon_left;
 	private static VictorSP talon_right;
 	private static VictorSP shooter_main,shooter_launcher;
+	private static VictorSP arm_2;
 	
+	//Robot Drive
+	public static RobotDrive drive;
 	
 	//value
     static boolean startout_main,startout_launcher,startin;
@@ -36,7 +40,9 @@ public class PWMDriveAssembly {
 			talon_right = new VictorSP(talon_right_id);
 			shooter_main = new VictorSP(shooter_main_id);
 			shooter_launcher = new VictorSP(shooter_launcher_id);
+			arm_2 = new VictorSP(arm_2_id);
 			JoyDrive.init();
+			drive = new RobotDrive(talon_left,talon_right	);
 			
 			startout_main = true;  //if the shooter's part is enabled
 			startout_launcher = true;
@@ -45,6 +51,7 @@ public class PWMDriveAssembly {
 	}
 	
 	public static void teleopPeriodic(){
+		emergency();
 		JoyDrive.Joystickvalue();
 		DriveBase();
 		Dashboard();
@@ -59,9 +66,28 @@ public class PWMDriveAssembly {
     	SmartDashboard.putNumber("Speed Plot", (-talon_left.get()+ talon_right.get())/2);
 	}
 	
+	public static void arm2(){
+		arm_2.set(JoyDrive.RY/1.5);
+	}
+	
+	public static void emergency(){
+		if(JoyDrive.joy_y){
+			talon_left.stopMotor();
+			talon_right.stopMotor();
+			shooter_launcher.stopMotor();
+			shooter_main.stopMotor();
+		}
+	}
+	
 	public static void DriveBase(){
+		
+		
+		
+		
 		talon_left.set(-JoyDrive.LY/2);
 		talon_right.set(JoyDrive.RY/2);
+		
+		
 	}
 	
 	
