@@ -15,15 +15,19 @@ public class PWMDriveAssembly {
 	private static boolean inited = false;
 	
 	// Speed controller IDs
-	private final static int talon_left_id = 0;
-	private final static int talon_right_id = 1;
+	private final static int talon_left_1_id = 0;
+	private final static int talon_left_2_id = 5;
+	private final static int talon_right_1_id = 1;
+	private final static int talon_right_2_id = 6;
 	private final static int shooter_main_id = 4;
 	private final static int shooter_launcher_id = 3;
 	private final static int arm_2_id = 2;
 	
 	//VictorSP
-	private static VictorSP talon_left;
-	private static VictorSP talon_right;
+	private static VictorSP talon_left_1;
+	private static VictorSP talon_left_2;
+	private static VictorSP talon_right_1;
+	private static VictorSP talon_right_2;
 	private static VictorSP shooter_main,shooter_launcher;
 	private static VictorSP arm_2;
 	
@@ -36,13 +40,14 @@ public class PWMDriveAssembly {
 	public static void init(){
 		if(!inited){
 			//talon
-			talon_left = new VictorSP(talon_left_id);
-			talon_right = new VictorSP(talon_right_id);
+			talon_left_1 = new VictorSP(talon_left_1_id);
+			talon_left_2 = new VictorSP(talon_left_2_id);
+			talon_right_1 = new VictorSP(talon_right_1_id);
+			talon_right_2 = new VictorSP(talon_right_2_id);
 			shooter_main = new VictorSP(shooter_main_id);
 			shooter_launcher = new VictorSP(shooter_launcher_id);
 			arm_2 = new VictorSP(arm_2_id);
 			JoyDrive.init();
-			drive = new RobotDrive(talon_left,talon_right	);
 			
 			startout_main = true;  //if the shooter's part is enabled
 			startout_launcher = true;
@@ -60,10 +65,10 @@ public class PWMDriveAssembly {
 	
 	
 	public static void Dashboard(){
-    	SmartDashboard.putNumber("Left Motor Encoder Value", -talon_left.get());
-    	SmartDashboard.putNumber("Right Motor Encoder Value", talon_right.get());
-    	SmartDashboard.putNumber("spSpeedControaleed", (-talon_left.get()+ talon_right.get())/2);
-    	SmartDashboard.putNumber("Speed Plot", (-talon_left.get()+ talon_right.get())/2);
+    	SmartDashboard.putNumber("Left Motor Encoder Value", -talon_left_1.get());
+    	SmartDashboard.putNumber("Right Motor Encoder Value", talon_right_1.get());
+    	SmartDashboard.putNumber("spSpeedControaleed", (-talon_left_1.get()+ talon_right_1.get())/2);
+    	SmartDashboard.putNumber("Speed Plot", (-talon_left_1.get()+ talon_right_1.get())/2);
 	}
 	
 	public static void arm2(){
@@ -72,8 +77,10 @@ public class PWMDriveAssembly {
 	
 	public static void emergency(){
 		if(JoyDrive.joy_y){
-			talon_left.stopMotor();
-			talon_right.stopMotor();
+			talon_left_1.stopMotor();
+			talon_left_2.stopMotor();
+			talon_right_1.stopMotor();
+			talon_right_2.stopMotor();
 			shooter_launcher.stopMotor();
 			shooter_main.stopMotor();
 		}
@@ -84,8 +91,10 @@ public class PWMDriveAssembly {
 		
 		
 		
-		talon_left.set(-JoyDrive.LY/2);
-		talon_right.set(JoyDrive.RY/2);
+		talon_left_1.set(-JoyDrive.LY/2);
+		talon_left_2.set(-JoyDrive.LY/2);
+		talon_right_1.set(JoyDrive.RY/2);
+		talon_right_2.set(JoyDrive.RY/2);
 		
 		
 	}
