@@ -19,6 +19,10 @@ public class JoyDrive {
 	public final static int joy_b_id = 2;
 	public final static int joy_x_id = 3;
 	public final static int joy_y_id = 4;
+	public final static int joy_LB_id = 5;
+	public final static int joy_RB_id = 6;
+	public final static int joy_Start_id = 7;
+	public final static int joy_Back_id = 8;
 	
 	
 	//joystick dirve
@@ -29,7 +33,7 @@ public class JoyDrive {
 	public static double LY;
 	public static double val;
 	
-	public static boolean joy_a,joy_b,joy_x,joy_y;
+    public static boolean joy_a,joy_b,joy_x,joy_y,joy_LB,joy_RB,joy_Start,joy_Back;
 	
 	
 	
@@ -59,6 +63,10 @@ public class JoyDrive {
         joy_b = joy.getRawButton(joy_b_id);
 		joy_x = joy.getRawButton(joy_x_id);
         joy_y = joy.getRawButton(joy_y_id);
+        joy_LB = joy.getRawButton(joy_LB_id);
+        joy_RB = joy.getRawButton(joy_RB_id);
+        joy_Start = joy.getRawButton(joy_Start_id);
+        joy_Back = joy.getRawButton(joy_Back_id);
         Dashboard();
 	}
 	
