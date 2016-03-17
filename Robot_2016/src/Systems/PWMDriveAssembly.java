@@ -18,10 +18,9 @@ public class PWMDriveAssembly {
 	private final static int talon_left_1_id = 0;
 	private final static int talon_left_2_id = 5;
 	private final static int talon_right_1_id = 1;
-	private final static int talon_right_2_id = 6;
+	private final static int talon_right_2_id = 2;
 	private final static int shooter_main_id = 4;
 	private final static int shooter_launcher_id = 3;
-	private final static int arm_2_id = 2;
 	
 	//VictorSP
 	private static VictorSP talon_left_1;
@@ -29,7 +28,6 @@ public class PWMDriveAssembly {
 	private static VictorSP talon_right_1;
 	private static VictorSP talon_right_2;
 	private static VictorSP shooter_main,shooter_launcher;
-	private static VictorSP arm_2;
 	
 	//Robot Drive
 	public static RobotDrive drive;
@@ -46,7 +44,6 @@ public class PWMDriveAssembly {
 			talon_right_2 = new VictorSP(talon_right_2_id);
 			shooter_main = new VictorSP(shooter_main_id);
 			shooter_launcher = new VictorSP(shooter_launcher_id);
-			arm_2 = new VictorSP(arm_2_id);
 			JoyDrive.init();
 			
 			startout_main = true;  //if the shooter's part is enabled
@@ -71,9 +68,6 @@ public class PWMDriveAssembly {
     	SmartDashboard.putNumber("Speed Plot", (-talon_left_1.get()+ talon_right_1.get())/2);
 	}
 	
-	public static void arm2(){
-		arm_2.set(JoyDrive.RY/1.5);
-	}
 	
 	public static void emergency(){
 		if(JoyDrive.joy_y){
