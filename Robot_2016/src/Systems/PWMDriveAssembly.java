@@ -14,13 +14,17 @@ public class PWMDriveAssembly {
 		
 	private static boolean inited = false;
 	
+	private static boolean auto;
+	
+	private static int autoloop;
+	
 	// Speed controller IDs
 	private final static int talon_left_1_id = 0;
 	private final static int talon_left_2_id = 5;
 	private final static int talon_right_1_id = 1;
 	private final static int talon_right_2_id = 2;
-	private final static int shooter_main_id = 4;
-	private final static int shooter_launcher_id = 3;
+	private final static int shooter_main_id = 3;
+	private final static int shooter_launcher_id = 4;
 	
 	//VictorSP
 	private static VictorSP talon_left_1;
@@ -49,6 +53,7 @@ public class PWMDriveAssembly {
 			startout_main = true;  //if the shooter's part is enabled
 			startout_launcher = true;
 			startin = true;
+			auto = true;
 		}	
 	}
 	
@@ -60,6 +65,26 @@ public class PWMDriveAssembly {
 		shooter();
 	}
 	
+	public static void auto(){
+		if(auto == true){
+			
+		talon_left_1.set(0.4);
+		talon_left_2.set(0.4);
+		talon_right_1.set(-0.4);
+		
+		talon_right_2.set(-0.4);
+		
+		Timer.delay(7);
+		
+		talon_left_1.set(0);
+		talon_left_2.set(0);
+		talon_right_1.set(0);
+		
+		talon_right_2.set(0);
+		auto = false;
+		}
+		
+	}
 	
 	public static void Dashboard(){
     	SmartDashboard.putNumber("Left Motor Encoder Value", -talon_left_1.get());
@@ -80,15 +105,16 @@ public class PWMDriveAssembly {
 		}
 	}
 	
+	
 	public static void DriveBase(){
 		
 		
 		
 		
-		talon_left_1.set(-JoyDrive.LY/2);
-		talon_left_2.set(-JoyDrive.LY/2);
-		talon_right_1.set(JoyDrive.RY/2);
-		talon_right_2.set(JoyDrive.RY/2);
+		talon_left_1.set(-JoyDrive.LY/1.5);
+		talon_left_2.set(-JoyDrive.LY/1.5);
+		talon_right_1.set(JoyDrive.RY/1.5);
+		talon_right_2.set(JoyDrive.RY/1.5);
 		
 		
 	}
@@ -113,7 +139,7 @@ public class PWMDriveAssembly {
 			if(!startout_main && !startout_launcher){
     			for(Double D = -0.5;D<=0;D=D+0.1){
     				shooter_main.set(D);
-    				
+    				shooter_launcher.set(D);
     		    	Timer.delay(0.1);
     		    }	
             	startout_main = true ;

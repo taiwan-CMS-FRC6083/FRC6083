@@ -61,12 +61,6 @@ public class Robot extends IterativeRobot {
         CANDriveAssembly.init();//init CANDevice
     	PWMDriveAssembly.init();//init PWMDevice
     	
-        frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
-
-        // the camera name (ex "cam0") can be found through the roborio web interface
-        session = NIVision.IMAQdxOpenCamera("cam0",
-                NIVision.IMAQdxCameraControlMode.CameraControlModeController);
-        NIVision.IMAQdxConfigureGrab(session);
     }
     
 	/**
@@ -95,7 +89,7 @@ public class Robot extends IterativeRobot {
     	case defaultAuto:
     	default:
     	//Put default auto code here
-    		
+    		PWMDriveAssembly.auto();
     		
             break;
     	}
@@ -114,36 +108,18 @@ public class Robot extends IterativeRobot {
     
     
     public void teleopPeriodic() {
-    	NIVision.IMAQdxStartAcquisition(session);
-
-        /**
-         * grab an image, draw the circle, and provide it for the camera server
-         * which will in turn send it to the dashboard.
-         */
-        NIVision.Rect rect = new NIVision.Rect(10, 10, 100, 100);
-
-        while (isOperatorControl() && isEnabled()) {
-
-            NIVision.IMAQdxGrab(session, frame, 1);
-            NIVision.imaqDrawShapeOnImage(frame, frame, rect,
-                    DrawMode.DRAW_VALUE, ShapeMode.SHAPE_OVAL, 0.0f);
-            
-            CameraServer.getInstance().setImage(frame);
-
-            /** robot code here! **/
+    	
             
         	switch(teleSelected) {
         	
         	
         	case defaultTele:
         	default:
-            	CANDriveAssembly.teleopPreiodic();//CANDrive teleop mode
+            	//CANDriveAssembly.teleopPreiodic();//CANDrive teleop mode
             	PWMDriveAssembly.teleopPeriodic();//PWMDrive teleop mode
         		break;
         	}
-            
-        }
-        NIVision.IMAQdxStopAcquisition(session);
+
     	
     }
     

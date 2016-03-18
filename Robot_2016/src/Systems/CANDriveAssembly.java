@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class CANDriveAssembly {
 	
-    private static final int talon_arm_id = 3;
+    private static final int talon_arm_id = 2;
     
     private static CANTalon talon_arm;
     
